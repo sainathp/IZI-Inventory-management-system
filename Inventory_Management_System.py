@@ -3,7 +3,10 @@
 import os
 import pandas as pd
 import datetime
-##Take user inputs
+
+##Function to add user inputs for refilling of inventory by vendors
+##All inputs should be given in quotes '' and only quantity should be in numerics
+
 def feed_refill():
     feed_refill_list=[]	
     feed_refill_date=input("Enter refilling of feed date(mm-dd-yy) in quotes: ")    
@@ -12,19 +15,39 @@ def feed_refill():
 	feed_refill_qty=input("Enter refilling quantity(lbs): ")
 	feed_refill_list=[feed_refill_date,feed_refill_time,feed_refill_zoo,feed_refill_qty,'dumped']
     return feed_refill_list
+
+##Function to add the consumption details for each animal by zoo and species
+##All inputs should be given in quotes '' and only quantity should be in numerics
+
 def feed_consumed():
-    feed_consumed_list=[]    
-    feed_consumed_date=input("Enter feed consumed date(mm-dd-yy) in quotes: ")
-    feed_consumed_time=input("Enter feed consumed time(hh:mm) in quotes: ")
-    feed_consumed_zoo=input("Enter consumed zoo number(1-215): ")
-    feed_consumed_qty=input("Enter feed consumed in quantity(lbs): ")
-    feed_consumed_animal=input("Enter feeed consumed by animal_number: ")
-    feed_consumed_species=input("Enter feed consumed species category: ")
-    feed_consumed_list=[feed_consumed_date,feed_consumed_time,feed_consumed_zoo,feed_consumed_qty,feed_consumed_animal,feed_consumed_species]
-    return feed_consumed_list
-##Setting paths
+	feed_consumed_list=[]    
+	feed_consumed_date=input("Enter feed consumed date(mm-dd-yy) in quotes: ")
+	feed_consumed_time=input("Enter feed consumed time(hh:mm) in quotes: ")
+	feed_consumed_zoo=input("Enter consumed zoo number(1-215): ")
+	feed_consumed_qty=input("Enter feed consumed in quantity(lbs): ")
+	feed_consumed_animal=input("Enter feeed consumed by animal_number: ")
+	feed_consumed_species=input("Enter feed consumed species category: ")
+	feed_consumed_list=[feed_consumed_date,feed_consumed_time,feed_consumed_zoo,feed_consumed_qty,feed_consumed_animal,feed_consumed_species]
+	return feed_consumed_list
+
+##Function to save the application state in current working directory.As soon as we exit the system saves the tables as csv files in cwd
+##Upon revoking again it loads the same data where the program was closed	
+def save_tables(refill_table,consumption_table):
+	refill_table.to_csv('feed_refill_table.csv',index=False)
+	consumption_table.to_csv('feed_consumption_table.csv',index=False)
+	wastage_table.to_csv('wastage_table.csv',index=False)
+
+
+#### Main Program Logic starts from here####
+## Make sure to keep all your files related to this program in current working directory i.e. your '.py file and csv's
+
 path=os.getcwd()
 os.chdir(path)
+
+
+print 'Welcome to the IZI zoo'
+
+##Checks for the existence of any saved data before program was exited last time
 if os.path.isfile('feed_refill_table.csv'):
     feed_refill_table=pd.read_csv('feed_refill_table.csv')
 else:
@@ -40,16 +63,14 @@ if os.path.isfile('wastage_table.csv'):
 else:    
     wastage_table=pd.DataFrame(columns=['wastage_date','wastage_for_zoo','wastage_qty'])
 
-##Main prog
-print 'Welcome to the IZI zoo'
-
+##Switch case menu where user is allowed to give inputs and see the inventory status
 while(True):
     print '\n'
     choice=input('\n'"Select your option-" '\n' 
-                 "  Vendor Refill Inventory:1" '\n' 
-                 "  Feed consumption for species:2" '\n' 
-                 "  Reports:3" '\n' 
-                 "  Exit Menu:4"'\n''\n')
+				 "  Vendor Refill Inventory:1" '\n' 
+				 "  Feed consumption for species:2" '\n' 
+				 "  Reports:3" '\n' 
+				 "  Exit Menu:4"'\n''\n')
     
 	if(choice==1):
 		n_entry=feed_refill()
