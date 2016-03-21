@@ -76,5 +76,7 @@ while(True):
 		print feed_consumption_table.groupby(['feed_consumed_animal','feed_consumed_date']).mean()['feed_consumed_qty']
 		print 'Number of times per day are animals fed on average''\n'
 		print feed_consumption_table.groupby(['feed_consumed_date','feed_consumed_species','feed_consumed_animal']).count()['feed_consumed_time']
+		print 'Amount of food wasted per zoo''\n'
+		print wastage_table.groupby(['wastage_for_zoo']).mean()
     	break
 
