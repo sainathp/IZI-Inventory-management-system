@@ -61,7 +61,7 @@ while(True):
 		feed_refill_table=feed_refill_table.append({'feed_refill_date':n_entry[0],'feed_refill_time':n_entry[1],'feed_refill_zoo':n_entry[2],'feed_refill_qty':n_entry[3],'flag':n_entry[4]},ignore_index=True)
 		print '\n''refill added' 
 
-		elif(choice==2):
+	elif(choice==2):
 		n_entry=feed_consumed()
 		feed_consumption_table=feed_consumption_table.append({'feed_consumed_date':n_entry[0],'feed_consumed_time':n_entry[1],'feed_consumed_zoo':n_entry[2],'feed_consumed_qty':n_entry[3],'feed_consumed_animal':n_entry[4],'feed_consumed_species':n_entry[5]},ignore_index=True)
 		o_entry=feed_refill_table[feed_refill_table['feed_refill_zoo']==n_entry[2]][-1:].values.flatten()
@@ -69,5 +69,10 @@ while(True):
 		o_entry[4]='consumed'
 		feed_refill_table=feed_refill_table.append({'feed_refill_date':o_entry[0],'feed_refill_time':o_entry[1],'feed_refill_zoo':o_entry[2],'feed_refill_qty':o_entry[3],'flag':o_entry[4]},ignore_index=True)
 		print '\n''quantity updated'
+
+	elif(choice==3):
+		print 'reports''\n'
+		print 'Each animal fed per day on average''\n'
+		print feed_consumption_table.groupby(['feed_consumed_animal','feed_consumed_date']).mean()['feed_consumed_qty']
     	break
 
