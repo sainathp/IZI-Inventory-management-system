@@ -51,15 +51,23 @@ while(True):
                  "  Reports:3" '\n' 
                  "  Exit Menu:4"'\n''\n')
     
-    if(choice==1):
-        n_entry=feed_refill()
-        o_entry=feed_refill_table[feed_refill_table['feed_refill_zoo']==n_entry[2]]
-        if(len(o_entry['flag']=='consumed')>0 or len(o_entry['flag']=='dumped')>0):
-            w_entry=o_entry[-1:].values.flatten()
-            wastage_table=wastage_table.append({'wastage_date':w_entry[0],'wastage_for_zoo':w_entry[2],'wastage_qty':w_entry[3]},ignore_index=True)
+	if(choice==1):
+		n_entry=feed_refill()
+		o_entry=feed_refill_table[feed_refill_table['feed_refill_zoo']==n_entry[2]]
+		if(len(o_entry['flag']=='consumed')>0 or len(o_entry['flag']=='dumped')>0):
+			w_entry=o_entry[-1:].values.flatten()
+			wastage_table=wastage_table.append({'wastage_date':w_entry[0],'wastage_for_zoo':w_entry[2],'wastage_qty':w_entry[3]},ignore_index=True)
 			print '\n''wastage added'
-        feed_refill_table=feed_refill_table.append({'feed_refill_date':n_entry[0],'feed_refill_time':n_entry[1],'feed_refill_zoo':n_entry[2],'feed_refill_qty':n_entry[3],'flag':n_entry[4]},ignore_index=True)
-        print '\n''refill added'    
-    
-    
+		feed_refill_table=feed_refill_table.append({'feed_refill_date':n_entry[0],'feed_refill_time':n_entry[1],'feed_refill_zoo':n_entry[2],'feed_refill_qty':n_entry[3],'flag':n_entry[4]},ignore_index=True)
+		print '\n''refill added' 
+
+		elif(choice==2):
+		n_entry=feed_consumed()
+		feed_consumption_table=feed_consumption_table.append({'feed_consumed_date':n_entry[0],'feed_consumed_time':n_entry[1],'feed_consumed_zoo':n_entry[2],'feed_consumed_qty':n_entry[3],'feed_consumed_animal':n_entry[4],'feed_consumed_species':n_entry[5]},ignore_index=True)
+		o_entry=feed_refill_table[feed_refill_table['feed_refill_zoo']==n_entry[2]][-1:].values.flatten()
+		o_entry[3]= o_entry[3]-n_entry[3]
+		o_entry[4]='consumed'
+		feed_refill_table=feed_refill_table.append({'feed_refill_date':o_entry[0],'feed_refill_time':o_entry[1],'feed_refill_zoo':o_entry[2],'feed_refill_qty':o_entry[3],'flag':o_entry[4]},ignore_index=True)
+		print '\n''quantity updated'
+    	break
 
